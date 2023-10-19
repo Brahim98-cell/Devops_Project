@@ -21,7 +21,15 @@ jdk 'JAVA_HOME'
                 sh 'mvn clean package' // Adjust this to your actual build command
             }
         }
+
+        stage('Unit Tests') {
+            steps {
+                sh 'mvn test'  // Assuming you use Maven and JUnit for testing
+            }
+        }
+        
     }
+         
 
     post {
         success {
