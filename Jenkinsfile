@@ -1,11 +1,7 @@
 pipeline {
     agent any
 
-tools{
 
-jdk 'JAVA_HOME'
-    
-}
     
     stages {
         stage('Checkout') {
@@ -27,6 +23,19 @@ jdk 'JAVA_HOME'
                 sh 'mvn test'  // Assuming you use Maven and JUnit for testing
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    sh 'mvn clean verify sonar:sonar ' +
+                       '-Dsonar.projectKey=sonar ' +
+                       '-Dsonar.projectName=sonar ' +
+                       '-Dsonar.host.url=http://192.168.33.10:9000 ' +
+                       '-Dsonar.login=your_sonarqube_token_here'
+                }
+            }
+        }
+
         
     }
          
