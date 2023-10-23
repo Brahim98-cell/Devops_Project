@@ -31,7 +31,7 @@ pipeline {
                        '-Dsonar.projectKey=sonar ' +
                        '-Dsonar.projectName=sonar ' +
                        '-Dsonar.host.url=http://192.168.33.10:9000 ' +
-                       '-Dsonar.login=your_sonarqube_token_here'
+                       '-Dsonar.login=sqp_c0339d4de46c555f337f14b58dd30e2a7defa9ec'
                 }
             }
         }
