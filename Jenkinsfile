@@ -1,15 +1,15 @@
 pipeline {
     agent any
 
- tools{
- nodejs 'nodejs'
- }
+    tools {
+        nodejs 'nodejs'
+    }
 
     stages {
         stage('Checkout') {
             steps {
                 // Checkout the code from the GitHub repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project.git']])
             }
         }
 
@@ -38,29 +38,23 @@ pipeline {
             }
         }
 
-
-
-
-
-
         stage('Checkout front') {
             steps {
                 // Checkout the code from the GitHub repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']])
             }
         }
 
-          stage('Build Angular') {
-                    steps {
-                        dir('frontend') {
-                            sh 'npm install'
-                            sh 'npm install -g @angular/cli'
-                            sh 'ng build'
-                        }
-                    }
+        stage('Build Angular') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'npm install -g @angular/cli'
+                    sh 'ng build'
                 }
-
-
+            }
+        }
+    }
 
     post {
         success {
