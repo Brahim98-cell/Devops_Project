@@ -1,22 +1,26 @@
 pipeline {
     agent any
 
+
+
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project.git']])
+                // Checkout the code from the GitHub repository
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project.git']]])
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                // Build the project using Maven
+                sh 'mvn clean package' // Adjust this to your actual build command
             }
         }
 
         stage('Unit Tests') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test'  // Assuming you use Maven and JUnit for testing
             }
         }
 
@@ -33,12 +37,19 @@ pipeline {
         }
 
 
+    }
+
+    
+
 
     post {
         success {
+            // Notify or perform additional tasks on successful build
             echo 'Build successful!'
         }
+
         failure {
+            // Notify or perform additional tasks on build failure
             echo 'Build failed. Please investigate.'
         }
     }
