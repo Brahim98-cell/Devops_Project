@@ -54,6 +54,7 @@ pipeline {
                     steps {
                         dir('frontend') {
                             sh 'npm install'
+                            sh 'npm install -g @angular/cli'
                             sh 'ng build --prod'
                         }
                     }
