@@ -32,23 +32,7 @@ pipeline {
             }
         }
 
-        stage('Checkout Frontend Code') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']])
-            }
-        }
 
-        stage('Build Angular') {
-            steps {
-                script {
-                    dir('frontend') {
-                        sh 'npm install'
-                        sh 'ng build --prod'
-                    }
-                }
-            }
-        }
-    }
 
     post {
         success {
