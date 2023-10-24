@@ -38,6 +38,29 @@ pipeline {
 
         
     }
+
+         stage('Checkout Frontend Code') {
+                steps {
+                    script {
+                        // Checkout the code for the frontend from its Git repository
+                        checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']]) // Replace with your frontend repo URL
+                    }
+                }
+            }
+
+            stage('Build Angular') {
+                steps {
+                    script {
+                        // Navigate to the frontend directory (if needed)
+                        dir('frontend') {
+                            // Install Angular dependencies and build the Angular app
+                            sh 'npm install'
+                            sh 'ng build --prod'
+                        }
+                    }
+                }
+            }
+        }
          
 
     post {
