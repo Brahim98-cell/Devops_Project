@@ -40,7 +40,7 @@ pipeline {
     }
 
 
-    stages {
+
         stage('Checkout front') {
             steps {
                 // Checkout the code from the GitHub repository
