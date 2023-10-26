@@ -38,10 +38,45 @@ pipeline {
             }
         }
 
+        stage("Publish to Nexus Repository Manager") {
+            steps {
+                script {
+                    def pom = readMavenPom file: "pom.xml"
+                    def filesByGlob = findFiles(glob: "target/*.${pom.packaging}")
+                    def artifactPath = filesByGlob[0].path
+                    def artifactExists = fileExists artifactPath
+
+                    if (artifactExists) {
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: 'http://192.168.33.10:8081',
+                            groupId: 'tn.esprit',
+                            version: '1.0',
+                            repository: 'maven-central-repo',
+                            credentialsId: 'nexus_cred',
+                            artifacts: [
+                                [artifactId: pom.DevOps_Project, // Use pom.artifactId
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                [artifactId: pom.DevOps_Project, // Use pom.artifactId
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        )
+                    } else {
+                        error "*** File: ${artifactPath} could not be found"
+                    }
+                }
+            }
+        }
+
         stage('Checkout front') {
             steps {
                 // Checkout the code from the GitHub repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']])
             }
         }
 
