@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
- tools{
- nodejs 'nodejs'
- }
+    tools {
+        nodejs 'nodejs'
+    }
 
     stages {
         stage('Checkout') {
@@ -39,9 +39,41 @@ pipeline {
         }
 
 
-
-
-
+        stage("Publish to Nexus Repository Manager") {
+                    steps {
+                        script {
+                            pom = readMavenPom file: "pom.xml";
+                            filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                            echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                            artifactPath = filesByGlob[0].path;
+                            artifactExists = fileExists artifactPath;
+                            if(artifactExists) {
+                                echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                                nexusArtifactUploader(
+                                    nexusVersion: 'nexus3',
+                                    protocol: 'http',
+                                    nexusUrl: 'http://192.168.33.10:8081',
+                                    groupId: 'pom.tn.esprit',
+                                    version: 'pom.1.0',
+                                    repository:'maven-central-repo' ,
+                                    credentialsId: 'nexus_cred',
+                                    artifacts: [
+                                        [artifactId: pom.DevOps_Project,
+                                        classifier: '',
+                                        file: artifactPath,
+                                        type: pom.packaging],
+                                        [artifactId: pom.DevOps_Project,
+                                        classifier: '',
+                                        file: "pom.xml",
+                                        type: "pom"]
+                                    ]
+                                );
+                            } else {
+                                error "*** File: ${artifactPath}, could not be found";
+                            }
+                        }
+                    }
+                }
 
         stage('Checkout front') {
             steps {
@@ -50,17 +82,16 @@ pipeline {
             }
         }
 
-          stage('Build Angular') {
-                    steps {
-                        dir('frontend') {
-                            sh 'npm install'
-                            sh 'npm install -g @angular/cli'
-                            sh 'ng build'
-                        }
-                    }
+        stage('Build Angular') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'npm install -g @angular/cli'
+                    sh 'ng build'
                 }
-
-
+            }
+        }
+    }
 
     post {
         success {
