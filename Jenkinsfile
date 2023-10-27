@@ -55,17 +55,14 @@ pipeline {
                                                                    nexusUrl: '192.168.33.10:8081',
                                                                    groupId: 'pom.tn.esprit',
                                                                    version: 'pom.1.0',
-                                                                   repository: 'maven-central-repo',
-                                                                   credentialsId: 'nexus_cred',
+                                                                   repository: 'test',
+                                                                   credentialsId: 'nexusCredential',
                                                                    artifacts: [
-                                                                       [artifactId: 'pom.DevOps_Project',
+                                                                       [artifactId: 'pom.artifactId',
                                                                        classifier: '',
                                                                        file: artifactPath,
-                                                                       type: pom.packaging],
-                                                                       [artifactId: 'pom.DevOps_Project',
-                                                                       classifier: '',
-                                                                       file: "pom.xml",
-                                                                       type: "pom"]
+                                                                       type: pom.packaging]
+                                                                      
                                                                    ]
                                                                );
                                                            } else {
