@@ -5,7 +5,6 @@ pipeline {
         nodejs 'nodejs'
     }
       environment {
-        DOCKER_REGISTRY = 'docker.io'  // Replace with the appropriate registry URL if not Docker Hub
         DOCKER_IMAGE_NAME = 'brahim98/devops_project:build'
     }
 
@@ -85,7 +84,7 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
-                    withDockerRegistry([credentialsId: 'docker-hub-creds', url: DOCKER_REGISTRY]) {
+                    withDockerRegistry([credentialsId: 'docker-hub-creds',url: ""]) {
                         // Push the Docker image to Docker Hub
                         sh "docker push $DOCKER_IMAGE_NAME"
                     }
