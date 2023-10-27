@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from the GitHub repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project.git']])
             }
         }
 
@@ -38,43 +38,42 @@ pipeline {
             }
         }
 
+        stage("Publish to Nexus Repository Manager") {
+            steps {
+                script {
+                    def pom = readMavenPom file: "pom.xml"
+                    def filesByGlob = findFiles(glob: "target/*.${pom.packaging}")
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    def artifactPath = filesByGlob[0].path
+                    def artifactExists = fileExists artifactPath
+                    if (artifactExists) {
+                        echo "* File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}"
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: 'http://192.168.33.10:8081', // Corrected the URL
+                            groupId: 'pom.tn.esprit',
+                            version: '1.0', // Corrected the version
+                            repository: 'test',
+                            credentialsId: 'nexusCredential',
+                            artifacts: [
+                                [artifactId: pom.artifactId, // Use the variable directly
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging]
+                            ]
+                        )
+                    } else {
+                        error "* File: ${artifactPath}, could not be found"
+                    }
+                }
+            }
+        }
 
-       stage("Publish to Nexus Repository Manager") {
-                                                   steps {
-                                                       script {
-                                                           pom = readMavenPom file: "pom.xml";
-                                                           filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                                                           echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                                                           artifactPath = filesByGlob[0].path;
-                                                           artifactExists = fileExists artifactPath;
-                                                           if(artifactExists) {
-                                                               echo "* File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-                                                               nexusArtifactUploader(
-                                                                   nexusVersion: 'nexus3',
-                                                                   protocol: 'http',
-                                                                   nexusUrl: '192.168.33.10:8081',
-                                                                   groupId: 'pom.tn.esprit',
-                                                                   version: 'pom.1.0',
-                                                                   repository: 'test',
-                                                                   credentialsId: 'nexusCredential',
-                                                                   artifacts: [
-                                                                       [artifactId: 'pom.artifactId',
-                                                                       classifier: '',
-                                                                       file: artifactPath,
-                                                                       type: pom.packaging]
-                                                                      
-                                                                   ]
-                                                               );
-                                                           } else {
-                                                               error "* File: ${artifactPath}, could not be found";
-                                                           }
-                                                       }
-                                                   }
-                                               }
         stage('Checkout front') {
             steps {
                 // Checkout the code from the GitHub repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Brahim98-cell/Devops_Project_front.git']])
             }
         }
 
@@ -88,7 +87,7 @@ pipeline {
             }
         }
 
-         stage('Build and Push Docker Image') {
+        stage('Build and Push Docker Image') {
             steps {
                 script {
                     // Build the Docker image for the Spring Boot app
@@ -105,10 +104,6 @@ pipeline {
                 }
             }
         }
-    }
-
-
-        
     }
 
     post {
