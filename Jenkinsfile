@@ -51,9 +51,9 @@ pipeline {
                         nexusArtifactUploader(
                             nexusVersion: 'nexus3',
                             protocol: 'http',
-                            nexusUrl: 'http://192.168.33.10:8081', // Corrected the URL
+                            nexusUrl: '192.168.33.10:8081', // Corrected the URL
                             groupId: 'pom.tn.esprit',
-                            version: '1.0', // Corrected the version
+                            version: 'pom.1.0', // Corrected the version
                             repository: 'test',
                             credentialsId: 'nexusCredential',
                             artifacts: [
