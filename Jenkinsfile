@@ -77,7 +77,7 @@ pipeline {
                     sh 'docker build -t my-spring-app:latest -f Dockerfile .'
                     
                     // Authenticate with Docker Hub using credentials (ensure credentials are configured in Jenkins)
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME',  url: "" )]) {
                         // Push the Docker image to Docker Hub
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                         sh 'docker push my-spring-app:latest'
@@ -110,7 +110,7 @@ pipeline {
                     sh 'docker build -t my-Angular-app:latest -f Dockerfile .'
                     
                     // Authenticate with Docker Hub using credentials (ensure credentials are configured in Jenkins)
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME',  url: "" )]) {
                         // Push the Docker image to Docker Hub
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                         sh 'docker push my-Angular-app:latest'
