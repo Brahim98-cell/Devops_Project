@@ -70,12 +70,12 @@ pipeline {
             }
         }
 stage('Build image spring') {
-     bat 'docker build -t brahim98/devops_project:build . '    }
+     sh 'docker build -t brahim98/devops_project:build . '    }
 
 
 stage('Push image spring') {
     docker.withRegistry('docker-hub-creds',url: "") {
-        bat 'docker push brahim98/devops_project:build'
+        sh 'docker push brahim98/devops_project:build'
     }
 }
 
