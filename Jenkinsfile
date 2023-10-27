@@ -4,6 +4,10 @@ pipeline {
     tools {
         nodejs 'nodejs'
     }
+      environment {
+        DOCKER_REGISTRY = 'docker.io'  // Replace with the appropriate registry URL if not Docker Hub
+        DOCKER_IMAGE_NAME = 'brahim98/devops_project:build'
+    }
 
     stages {
         stage('Checkout') {
@@ -69,15 +73,24 @@ pipeline {
                 }
             }
         }
-stage('Build image spring') {
-     sh 'docker build -t brahim98/devops_project_back:build . '    }
-
-
-stage('Push image') {
-        withDockerRegistry([ credentialsId: "docker-hub-creds", url: "" ]) {
-        sh "docker push brahim98/devops_project_back:build"
+ stage('Build image spring') {
+            steps {
+                script {
+                    // Build the Docker image for the Spring Boot app
+                    sh "docker build -t $DOCKER_IMAGE_NAME ."
+                }
+            }
         }
-}
+
+        stage('Push image') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'docker-hub-creds', url: DOCKER_REGISTRY]) {
+                        // Push the Docker image to Docker Hub
+                        sh "docker push $DOCKER_IMAGE_NAME"
+                    }
+                }
+            }}
 
         stage('Checkout front') {
             steps {
