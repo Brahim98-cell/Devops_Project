@@ -70,13 +70,13 @@ pipeline {
             }
         }
 stage('Build image spring') {
-     sh 'docker build -t brahim98/devops_project:build . '    }
+     sh 'docker build -t brahim98/devops_project_back:build . '    }
 
 
-stage('Push image spring') {
-    docker.withRegistry('docker-hub-creds',url: "") {
-        sh 'docker push brahim98/devops_project:build'
-    }
+stage('Push image') {
+        withDockerRegistry([ credentialsId: "docker-hub-creds", url: "" ]) {
+        sh "docker push brahim98/devops_project_back:build"
+        }
 }
 
         stage('Checkout front') {
