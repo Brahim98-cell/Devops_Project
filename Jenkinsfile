@@ -5,7 +5,9 @@ pipeline {
         nodejs 'nodejs'
     }
       environment {
-        DOCKER_IMAGE_NAME = 'brahim98/devops_project:build'
+        DOCKER_IMAGE_Back_NAME = 'brahim98/devops_project_Back:build'
+        DOCKER_IMAGE_Front_NAME = 'brahim98/devops_project_Front:build'
+
     }
 
     stages {
@@ -76,17 +78,17 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image for the Spring Boot app
-                    sh "docker build -t $DOCKER_IMAGE_NAME ."
+                    sh "docker build -t $DOCKER_IMAGE_Back_NAME ."
                 }
             }
         }
 
-        stage('Push image') {
+        stage('Push image spring') {
             steps {
                 script {
                     withDockerRegistry([credentialsId: 'docker-hub-creds',url: ""]) {
                         // Push the Docker image to Docker Hub
-                        sh "docker push $DOCKER_IMAGE_NAME"
+                        sh "docker push $DOCKER_IMAGE_Back_NAME"
                     }
                 }
             }}
@@ -107,22 +109,25 @@ pipeline {
                 }
             }
         }
-
-        stage('Build and Push Docker Image Frontend') {
+stage('Build image Angular') {
             steps {
                 script {
                     // Build the Docker image for the Spring Boot app
-                    sh 'docker build -t my-Angular-app:latest -f Dockerfile .'
-                    
-                    // Authenticate with Docker Hub using credentials (ensure credentials are configured in Jenkins)
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME',  url: "" )]) {
-                        // Push the Docker image to Docker Hub
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                        sh 'docker push my-Angular-app:latest'
-                    }
+                    sh "docker build -t $DOCKER_IMAGE_Front_NAME ."
                 }
             }
         }
+
+        stage('Push image Angular') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'docker-hub-creds',url: ""]) {
+                        // Push the Docker image to Docker Hub
+                        sh "docker push $DOCKER_IMAGE_Front_NAME"
+                    }
+                }
+            }}
+
     }
 
     post {
