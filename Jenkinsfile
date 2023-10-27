@@ -87,23 +87,6 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image for the Spring Boot app
-                    sh 'docker build -t my-spring-app:latest -f Dockerfile .'
-                    
-                    // Authenticate with Docker Hub using credentials (ensure credentials are configured in Jenkins)
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        DOCKER_USERNAME = 'brahim98'
-                        DOCKER_PASSWORD = '123azerty'
-                        // Push the Docker image to Docker Hub
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                        sh 'docker push my-spring-app:latest'
-                    }
-                }
-            }
-        }
     }
 
     post {
