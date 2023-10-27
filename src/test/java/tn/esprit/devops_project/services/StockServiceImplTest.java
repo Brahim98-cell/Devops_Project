@@ -59,6 +59,6 @@ class StockServiceImplTest {
 
     }
     /*
-avad
+avadd
      */
 }
