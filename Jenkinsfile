@@ -70,18 +70,14 @@ pipeline {
             }
         }
 stage('Build image spring') {
-    /* This builds the actual image; synonymous to
-     * docker build on the command line */
-
      bat 'docker build -t brahim98/devops_project:build . '    }
 
 
 stage('Push image spring') {
-    /* Finally, we'll push the image with two tags:
     docker.withRegistry('docker-hub-creds',url: "") {
         bat 'docker push brahim98/devops_project:build'
     }
-
+}
 
         stage('Checkout front') {
             steps {
