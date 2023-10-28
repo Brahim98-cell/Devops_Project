@@ -129,16 +129,16 @@ stage('Build image Angular') {
             }}
 
          stage('Build and Deploy') {
-            steps {
-                // Checkout your source code from version control system if needed
+    steps {
+        // Checkout your source code from the version control system if needed
 
-                // Build the Docker images for your Spring Boot backend and Angular frontend
-                sh "docker-compose -f docker-compose.yml build"
+        // Build the Docker images for your Spring Boot backend and Angular frontend
+        sh "/usr/bin/docker-compose -f docker-compose.yml build"
 
-                // Start the application stack using Docker Compose
-                sh "docker-compose -f docker-compose.yml up -d"
-            }
-        }
+        // Start the application stack using Docker Compose
+        sh "/usr/bin/docker-compose -f docker-compose.yml up -d"
+    }
+}
 
     }
 
