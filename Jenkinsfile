@@ -5,8 +5,8 @@ pipeline {
         nodejs 'nodejs'
     }
       environment {
-        DOCKER_IMAGE_Back_NAME = 'brahim98/devops_project_back:Springimage'
-        DOCKER_IMAGE_Front_NAME = 'brahim98/devops_project_front:Angularimage'
+        DOCKER_IMAGE_Back_NAME = 'brahim98/devops_project_back:MySpringimage'
+        DOCKER_IMAGE_Front_NAME = 'brahim98/devops_project_front:MyAngularimage'
 
     }
 
