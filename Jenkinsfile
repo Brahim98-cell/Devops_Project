@@ -9,6 +9,10 @@ pipeline {
         DOCKER_IMAGE_Front_NAME = 'brahim98/devops_project_front:MyAngularimage'
 
     }
+
+    stages {
+        
+
         stage('Checkout front') {
             steps {
                 // Checkout the code from the GitHub repository
@@ -16,6 +20,7 @@ pipeline {
             }
         }
 
+ 
                 stage('Build and Deploy Grafana and Prometheus') {
     steps {
         // Checkout your source code from the version control system if needed
