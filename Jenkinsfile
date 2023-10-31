@@ -26,7 +26,7 @@ pipeline {
         dir('frontend') {
             sh 'npm install'
             sh 'npm install -g @angular/cli'
-            sh 'ng build --configuration=production --base-href /'
+            sh 'ng build --prod --base-href /'
         }
     }
 }
