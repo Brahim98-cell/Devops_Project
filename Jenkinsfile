@@ -22,15 +22,15 @@ pipeline {
 
  
         stage('Build Angular') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'npm install -g @angular/cli'
-                    sh 'ng build --prod --base-href /'
-'
-                }
-            }
+    steps {
+        dir('frontend') {
+            sh 'npm install'
+            sh 'npm install -g @angular/cli'
+            sh 'ng build --prod --base-href /'
         }
+    }
+}
+
 stage('Build image Angular') {
             steps {
                 script {
