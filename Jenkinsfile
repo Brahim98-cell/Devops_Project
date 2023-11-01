@@ -60,7 +60,16 @@ stage('Build image Angular') {
     }
 }
 
+                stage('Build and Deploy Grafana and Prometheus') {
+    steps {
+        // Checkout your source code from the version control system if needed
 
+        // Build the Docker images for your Spring Boot backend and Angular frontend
+
+        // Start the application stack using Docker Compose
+        sh "/usr/bin/docker-compose -f docker-compose2.yml up -d"
+    }
+}
 
     }
 
