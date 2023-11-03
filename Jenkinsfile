@@ -74,7 +74,7 @@ stage('Build image Angular') {
         // Checkout your server code from version control (if needed)
 
         // Start your server in the background using nohup
-        sh "nohup node .\server\prometheus-server.js > /dev/null 2>&1 &"
+        sh "nohup node ./server/prometheus-server.js > /dev/null 2>&1 &"
 
         // Wait for a short duration (e.g., 5 seconds) to allow the server to start
         sleep time: 5, unit: 'SECONDS'
