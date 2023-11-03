@@ -21,33 +21,6 @@ pipeline {
             }
         }
 
-        stage('Build Angular') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'ng build'
-                }
-            }
-        }
-stage('Build image Angular') {
-            steps {
-                script {
-                    // Build the Docker image for the Spring Boot app
-                    sh "docker build -t $DOCKER_IMAGE_Front_NAME ."
-                }
-            }
-        }
-
-        stage('Push image Angular') {
-            steps {
-                script {
-                    withDockerRegistry([credentialsId: 'docker-hub-creds',url: ""]) {
-                        // Push the Docker image to Docker Hub
-                        sh "docker push $DOCKER_IMAGE_Front_NAME"
-                    }
-                }
-            }}
-
          stage('Build and Deploy') {
     steps {
         // Checkout your source code from the version control system if needed
@@ -69,16 +42,7 @@ stage('Build image Angular') {
     }
 }
 
-        stage('Start Prometheus Server') {
-    steps {
-        // Checkout your server code from version control (if needed)
 
-        // Start your server in the background using nohup
-        sh "nohup node ./server/prometheus-server.js > /dev/null 2>&1 &"
-
-        // Wait for a short duration (e.g., 5 seconds) to allow the server to start
-    }
-}
 
 
     }
