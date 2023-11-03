@@ -29,7 +29,7 @@ pipeline {
         // Build the Docker images for your Spring Boot backend and Angular frontend
 
         // Start the application stack using Docker Compose
-        sh "nohup node ./server/prometheus-server.js"
+        sh "nohup node ./server/prometheus-server.js &"
     }
 }
 
