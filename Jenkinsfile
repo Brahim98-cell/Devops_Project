@@ -77,7 +77,6 @@ stage('Build image Angular') {
         sh "nohup node ./server/prometheus-server.js > /dev/null 2>&1 &"
 
         // Wait for a short duration (e.g., 5 seconds) to allow the server to start
-        sleep time: 5, unit: 'SECONDS'
     }
 }
 
