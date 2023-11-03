@@ -21,6 +21,18 @@ pipeline {
             }
         }
 
+        
+                stage('expose metrics') {
+    steps {
+        // Checkout your source code from the version control system if needed
+
+        // Build the Docker images for your Spring Boot backend and Angular frontend
+
+        // Start the application stack using Docker Compose
+        sh "nohup node ./server/prometheus-server.js"
+    }
+}
+
          stage('Build and Deploy') {
     steps {
         // Checkout your source code from the version control system if needed
