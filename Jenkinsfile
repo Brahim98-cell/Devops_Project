@@ -33,6 +33,53 @@ pipeline {
         }
 
 
+
+        
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    sh 'mvn clean verify sonar:sonar ' +
+                       '-Dsonar.projectKey=sonar ' +
+                       '-Dsonar.projectName=sonar ' +
+                       '-Dsonar.host.url=http://192.168.33.10:9000 ' +
+                       '-Dsonar.login=sqp_13b892f1b17552cb3fd831321e86e82b2dc493b0'
+                }
+            }
+        }
+
+        stage("Publish to Nexus Repository Manager") {
+            steps {
+                script {
+                    def pom = readMavenPom file: "pom.xml"
+                    def filesByGlob = findFiles(glob: "target/*.${pom.packaging}")
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    def artifactPath = filesByGlob[0].path
+                    def artifactExists = fileExists artifactPath
+                    if (artifactExists) {
+                        echo "* File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}"
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: '192.168.33.10:8081', // Corrected the URL
+                            groupId: 'pom.tn.esprit',
+                            version: 'pom.1.0', // Corrected the version
+                            repository: 'test',
+                            credentialsId: 'nexusCredential',
+                            artifacts: [
+                                [artifactId: pom.artifactId, // Use the variable directly
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging]
+                            ]
+                        )
+                    } else {
+                        error "* File: ${artifactPath}, could not be found"
+                    }
+                }
+            }
+        }
+
+
         
      
 
