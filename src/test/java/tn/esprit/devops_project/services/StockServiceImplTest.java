@@ -61,5 +61,6 @@ class StockServiceImplTest {
         Exception exception = assertThrows(NullPointerException.class, () -> {
             final Stock stock = this.stockService.retrieveStock(100L);
         });
+            /*aa */
     }
 }
