@@ -45,11 +45,11 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		return invoiceRepository.findById(invoiceId).orElseThrow(() -> new NullPointerException("Invoice not found"));
 	}
 
-	@Override
-	public List<Invoice> getInvoicesBySupplier(Long idSupplier) {
-		Supplier supplier = supplierRepository.findById(idSupplier).orElseThrow(() -> new NullPointerException("Supplier not found"));
-		return (List<Invoice>) supplier.getInvoices();
-	}
+		@Override
+		public List<Invoice> getInvoicesBySupplier(Long idSupplier) {
+			Supplier supplier = supplierRepository.findById(idSupplier).orElseThrow(() -> new NullPointerException("Supplier not found"));
+			return (List<Invoice>) supplier.getInvoices();
+		}
 
 	@Override
 	public void assignOperatorToInvoice(Long idOperator, Long idInvoice) {
